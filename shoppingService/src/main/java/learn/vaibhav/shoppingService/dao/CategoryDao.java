@@ -11,10 +11,10 @@ import learn.vaibhav.shoppingService.dto.Category;
  * @author vaibhav.bansal
  *
  */
-public interface CategoryDao {
+public interface CategoryDao extends GenericDao<Category>{
 	
-	List<Category> list();
+	public List<Category> list();
 	
-	Category get(int id);
+	boolean deleteCategory(Category cat);
 
 }

@@ -3,17 +3,37 @@
  */
 package learn.vaibhav.shoppingService.dto;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * @author vaibhav.bansal
  *
  */
+@Entity
+@Table(name ="sub_category")
 public class SubCategory {
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	private int categoryId;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id", nullable=false)
+	private Category category;
+	
 	private String name;
 	private String description;
+	@Column (name="image_url")
 	private String imageUrl;
+	@Column (name="is_active")
 	private boolean isActive;
 	
 	public int getId() {
@@ -23,11 +43,11 @@ public class SubCategory {
 		this.id = id;
 	}
 		
-	public int getCategoryId() {
-		return categoryId;
+	public Category getCategory() {
+		return category;
 	}
-	public void setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 	public String getName() {
 		return name;

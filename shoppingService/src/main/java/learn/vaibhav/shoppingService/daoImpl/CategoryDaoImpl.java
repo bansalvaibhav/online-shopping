@@ -3,10 +3,13 @@
  */
 package learn.vaibhav.shoppingService.daoImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import learn.vaibhav.shoppingService.dao.CategoryDao;
 import learn.vaibhav.shoppingService.dto.Category;
@@ -16,31 +19,24 @@ import learn.vaibhav.shoppingService.dto.Category;
  *
  */
 @Repository("categoryDao")
-public class CategoryDaoImpl implements CategoryDao{
-	
-	private static List<Category> staticCategory = new ArrayList<>();
-	
-	static{
-		staticCategory.add(new Category(1, "Television", "tv category, static", null, true));
-		staticCategory.add(new Category(2, "Mobile", "mobile category, static", null, true));
-		staticCategory.add(new Category(3, "Laptop", "laptop category, static", null, true));
-	}
-	
+@Transactional
+public class CategoryDaoImpl extends GenericDaoImpl<Category> implements CategoryDao{
+
 	@Override
 	public List<Category> list() {
-		// TODO Auto-generated method stub
-		return staticCategory;
+		String queryString = "FROM Category where isActive= :active";
+		Query<Category> query = session.getCurrentSession().createQuery(queryString,Category.class);
+		query.setParameter("active", true);
+		return query.getResultList();
+		
 	}
 
 	@Override
-	public Category get(int id) {
-		for(Category cat: staticCategory){
-			if(cat.getId()==id){
-				return cat;
-			}
-		}
-		return null;
+	public boolean deleteCategory(Category cat) {
+		cat.setActive(false);
+		return updateItem(cat);	
 	}
+
 
 	
 	

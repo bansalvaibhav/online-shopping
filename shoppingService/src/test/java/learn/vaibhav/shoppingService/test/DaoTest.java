@@ -10,17 +10,25 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import junit.framework.Assert;
 import learn.vaibhav.shoppingService.dao.CategoryDao;
+import learn.vaibhav.shoppingService.dao.GenericDao;
+import learn.vaibhav.shoppingService.dao.ProductDao;
 import learn.vaibhav.shoppingService.dto.Category;
+import learn.vaibhav.shoppingService.dto.Product;
+import learn.vaibhav.shoppingService.dto.ProductDetails;
 
 /**
  * @author vaibhav.bansal
  *
  */
-public class CategoryTest {
+public class DaoTest {
 	
 	private static AnnotationConfigApplicationContext appContext;
 	
 	private static CategoryDao categoryDao;
+	
+	private static ProductDao productDao;
+	
+	private static GenericDao genericDao;
 	
 	private Category category;
 	
@@ -31,9 +39,11 @@ public class CategoryTest {
 		appContext.refresh();
 		
 		categoryDao = appContext.getBean(CategoryDao.class);
+		productDao = appContext.getBean(ProductDao.class);
+		genericDao = (GenericDao) appContext.getBean("genericDao");
 	}
 	
-	@Test
+/*	@Test
 	@Ignore
 	public void testAddCategory(){
 		category= new Category();
@@ -69,6 +79,31 @@ public class CategoryTest {
 	@Test 
 	public void testGetActiveList(){
 		Assert.assertEquals("passed", 3, categoryDao.list().size());;
+	}*/
+	
+	@Test
+	public void testProductDaoCrudOperation(){
+		Category cat= categoryDao.get(Category.class, 3);
+		Product product = new Product();
+		product.setActive(true);
+		product.setCategory(cat);
+		ProductDetails pd = (ProductDetails) genericDao.get(ProductDetails.class, 1);
+		//pd.setProduct(product);
+		product.setProductDetails(pd);
+		Assert.assertEquals(true, productDao.addItem(product));
 	}
 
+	@Test
+	@Ignore
+	public void testProductDetailsDaoCrudOperation(){
+		ProductDetails productDetails = new ProductDetails();
+		productDetails.setActive(true);
+		productDetails.setActualPrice(100.00);
+		productDetails.setMaximumQty(2);
+		productDetails.setMinimumQty(1);
+		productDetails.setProductDescription("This is honor 7x");
+		productDetails.setProductName("HONOR 7x");
+		productDetails.setTaxCategoryId(1);
+		Assert.assertEquals(true, genericDao.addItem(productDetails));
+	}
 }

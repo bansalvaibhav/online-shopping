@@ -40,7 +40,7 @@ public class Product implements Serializable{
 	/*@ManyToOne(fetch = FetchType.LAZY)
 	private List<ProductImages> images;*/
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="product_detail_id")
+	@JoinColumn(name="product_details_id")
 	private ProductDetails productDetails;
 
 	public int getId() {

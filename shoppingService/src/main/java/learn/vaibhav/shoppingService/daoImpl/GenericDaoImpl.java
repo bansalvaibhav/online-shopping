@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import learn.vaibhav.shoppingService.dao.GenericDao;
@@ -16,6 +17,7 @@ import learn.vaibhav.shoppingService.dao.GenericDao;
  *
  */
 @Transactional
+@Repository("genericDao")
 public class GenericDaoImpl<T extends Serializable> implements GenericDao<T> {
 
 	@Autowired

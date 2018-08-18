@@ -64,7 +64,7 @@ public class PageController {
 		ModelAndView mv = new ModelAndView("page");
 		
 		//categorydao to fetch single category
-		Category category = categoryDao.get(id);
+		Category category = categoryDao.get(Category.class,id);
 		if(category!=null){
 			mv.addObject("title", category.getName());	
 		}
